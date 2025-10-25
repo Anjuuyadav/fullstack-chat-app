@@ -10,7 +10,7 @@ const cors = require("cors");
 const path = require("path");
 
 // app.use(express.json());
-const __dirname = path.resolve();
+// const __dirname = path.resolve();
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
 app.use(cookieParser());
@@ -25,7 +25,11 @@ app.use("/api/messages", messageRoutes);
 
 if(process.env.NODE_ENV === "producttion"){
     app.use(express.static(path.join(__dirname, "../frontend/dist")));
-}
+
+    app.get("*", (req, res) => {
+        res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+    })
+};
 
 connectDB();
 
