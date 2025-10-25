@@ -6,9 +6,10 @@ const app = express();
 const server = http.createServer(app);
 
 const io = new Server(server, {
-    cors: {
-        origin: ["https://fullstack-chat-app-backend-z7v9.onrender.com"]
-    },
+    cors: [
+           "https://fullstack-chat-app-backend-z7v9.onrender.com",
+        "http://localhost:5173"
+    ],
 });
 
 const getReceiverSocketId = (userId) => {
