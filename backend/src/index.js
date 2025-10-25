@@ -14,10 +14,23 @@ const path = require("path");
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
 app.use(cookieParser());
-app.use(cors({
-    origin: "https://fullstack-chat-app-frontend-f4ka.onrender.com",
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://fullstack-chat-app-frontend-f4ka.onrender.com" 
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
-})
+  })
 );
 
 app.use("/api/auth", authRoutes);
