@@ -22,11 +22,12 @@ const allowedOrigins = [
 
 app.use(
   cors({
-    origin: function (origin, callback) {
+    origin: (origin, callback) => {
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        callback(new Error("Not allowed by CORS"));
+        console.warn("❌ Blocked by CORS:", origin);
+    callback(null, false);
       }
     },
     credentials: true,
@@ -36,7 +37,7 @@ app.use(
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
-if(process.env.NODE_ENV === "producttion"){
+if(process.env.NODE_ENV === "production"){
     app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
     app.get("*", (req, res) => {
